@@ -568,6 +568,7 @@ async function run() {
           retset.minmultcompra               :=    vminmultcompra.segment1;
           retset.icms_desonerado             :=    c_itens.icms_desonerado;
           retset.motivo_isencao_ms           :=    c_itens.motivo_isencao_ms;
+          retset.situacao_estadual           :=    c_itens.situacao_estadual;
           --retset.teste_Data                  :=    p_date;
           pipe ROW(retset);
         END LOOP;
