@@ -234,7 +234,7 @@ async function run() {
                     , CAB.status_compra
                     , CAB.status_venda
                     , CAB.data_hora_inclusao
-                    , CAB.data_hora_ultima_alteracao
+                    , MAX( CAB.data_hora_ultima_alteracao )  data_hora_ultima_alteracao
                     , CAB.rowversion 
                     , CAB.principio_ativo
                     , CAB.inventory_item_id
@@ -260,8 +260,7 @@ async function run() {
                     , CAB.fabricacao_propria
                     , CAB.icms_desonerado
                     , CAB.motivo_isencao_ms
-                    , CAB.situacao_estadual
-      
+                    , CAB.situacao_estadual      
               FROM
                       (
                         SELECT
@@ -440,6 +439,44 @@ async function run() {
                       )                                                                  EAN
             WHERE 1=1
               AND EAN.inventory_item_id(+) = CAB.inventory_item_id
+            GROUP BY
+                      CAB.produto
+                    , CAB.descricao
+                    , CAB.unidade_medida
+                    , CAB.codigo_cest
+                    , CAB.origem
+                    , CAB.eh_revenda
+                    , CAB.data_inclusao
+                    , CAB.data_fora_linha
+                    , CAB.status_compra
+                    , CAB.status_venda
+                    , CAB.data_hora_inclusao
+                    , CAB.rowversion 
+                    , CAB.principio_ativo
+                    , CAB.inventory_item_id
+                    , CAB.organization_id
+                    , CAB.registro_ms
+                    , CAB.qtd_apresenta
+                    , CAB.embal_indust
+                    , CAB.peso_liquido
+                    , CAB.dosagem
+                    , CAB.nom_comercial
+                    , CAB.peso
+                    , CAB.dimensao_und_medida
+                    , CAB.unidade_medida_fracionado
+                    , CAB.comprimento
+                    , CAB.largura 
+                    , CAB.altura
+                    , CAB.id_campanha
+                    , CAB.status_item
+                    , EAN.segment1
+                    , EAN.segment2
+                    , CAB.ncm_icms
+                    , CAB.ncm_ipi
+                    , CAB.fabricacao_propria
+                    , CAB.icms_desonerado
+                    , CAB.motivo_isencao_ms
+                    , CAB.situacao_estadual
           )
         LOOP
       
