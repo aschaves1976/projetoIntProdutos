@@ -93,7 +93,7 @@ DECLARE
     , eh_revenda
       FROM xxven_carga_fullitems_tb cust
     WHERE 1=1
-      --AND id_sequencial = 550483
+      -- AND id_sequencial IN
   ;
 
   TYPE lt_id_sequencial               IS TABLE OF xxven_carga_fullitems_tb.id_sequencial%TYPE   INDEX BY PLS_INTEGER;
@@ -585,7 +585,7 @@ DECLARE
             ;
           EXCEPTION
             WHEN OTHERS THEN
-              dbms_output.put_line('Category Id: ' || p_category_id || 'não localizada. - ' || SQLERRM);
+              NULL; -- dbms_output.put_line('Category Id: ' || p_category_id || 'não localizada. - ' || SQLERRM);
           END;
         END IF;	   
     
@@ -767,9 +767,16 @@ DECLARE
     END;
   EXCEPTION
     WHEN OTHERS THEN
-      DBMS_OUTPUT.PUT_LINE(   'CATEGORY_P - ERRO SÚBITO: p_inventory_item_id: '||p_inventory_item_id||' p_category_id: '||p_category_id||' p_category_set_id: '||p_category_set_id
-                           || ' p_structure_id: '||p_structure_id || ' - ' ||SQLERRM
-	                      )
+      create_log_p
+        (
+          p_inventory_item_id   => p_inventory_item_id
+        , p_category_id         => p_category_id
+        , p_category_set_id     => p_category_set_id
+        , p_structure_id        => p_structure_id
+        , p_status              => 'E'
+        , p_description         => 'CATEGORY_P - ERRO SÚBITO: p_inventory_item_id: '||p_inventory_item_id||' p_category_id: '||p_category_id||' p_category_set_id: '||p_category_set_id
+                   || ' p_structure_id: '||p_structure_id || ' - ' ||SQLERRM
+        )
       ;
   END category_p;
 

@@ -1,0 +1,74 @@
+DECLARE
+   codigo_secao         integer;
+   codigo_grupo         integer;
+   codigo_subgrupo      integer;
+   descricao_secao      string;
+   descricao_grupo      string;
+   descricao_subgrupo   string;
+   
+   extracaoOracle       array;
+              
+
+BEGIN
+    descricao_secao    := extracaoOracle.secao;
+    descricao_grupo    := extracaoOracle.grupo;
+    descricao_subgrupo := extracaoOracle.subgrupo;
+    
+    Find PRODUTOS_SECAO.CODIGO_SECAO
+        Where PRODUTOS_SECAO.DESCRICAO_SECAO = descricao_secao;
+        
+    If (PRODUTOS_SECAO.CODIGO_SECAO) Then
+        codigo_secao := PRODUTOS_SECAO.CODIGO_SECAO;
+        
+        Find PRODUTOS_GRUPO.CODIGO_GRUPO
+            Where PRODUTOS_GRUPO.CODIGO_SECAO = codigo_secao
+              And PRODUTOS_GRUPO.DESCRICAO_GRUPO = descricao_grupo;
+        
+        If (PRODUTOS_GRUPO.CODIGO_GRUPO) Then
+            codigo_grupo := PRODUTOS_GRUPO.CODIGO_GRUPO;
+            
+            Find PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO
+                Where PRODUTOS_SUBGRUPO.CODIGO_SECAO = codigo_secao
+                  And PRODUTOS_SUBGRUPO.CODIGO_GRUPO = codigo_grupo
+                  And PRODUTOS_SUBGRUPO.DESCRICAO_SUBGRUPO = descricao_subgrupo;
+
+            If (PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO) Then
+                codigo_subgrupo := PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO;
+            Else
+                Find MAX(PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO);
+                codigo_subgrupo := MAX(PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO) + 1;
+
+                -- Procedures do Analisa para Inserir / Atualizar --
+                ANALISA.ATUALIZA_PRODUTOS_SUBGRUPO( codigo_secao, codigo_grupo, codigo_subgrupo, descricao_subgrupo );
+            End If;
+        Else
+            Find MAX(PRODUTOS_GRUPO.CODIGO_GRUPO);
+            codigo_grupo    := MAX(PRODUTOS_GRUPO.CODIGO_GRUPO) + 1;
+        
+            Find MAX(PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO);
+            codigo_subgrupo := MAX(PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO) + 1;
+        
+            -- Procedures do Analisa para Inserir / Atualizar --
+            ANALISA.ATUALIZA_PRODUTOS_GRUPO( codigo_secao, codigo_grupo, descricao_grupo );
+            ANALISA.ATUALIZA_PRODUTOS_SUBGRUPO( codigo_secao, codigo_grupo, codigo_subgrupo, descricao_subgrupo );
+        End If;
+    Else
+        Find MAX(PRODUTOS_SECAO.CODIGO_SECAO)
+        codigo_secao    := MAX(PRODUTOS_SECAO.CODIGO_SECAO) + 1;
+        
+        Find MAX(PRODUTOS_GRUPO.CODIGO_GRUPO)
+        codigo_grupo    := MAX(PRODUTOS_GRUPO.CODIGO_GRUPO) + 1;
+        
+        Find MAX(PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO)
+        codigo_subgrupo := MAX(PRODUTOS_SUBGRUPO.CODIGO_SUBGRUPO) + 1;
+        
+        -- Procedures do Analisa para Inserir / Atualizar --
+        ANALISA.ATUALIZA_PRODUTOS_SECAO( codigo_secao, descricao_secao );
+        ANALISA.ATUALIZA_PRODUTOS_GRUPO( codigo_secao, codigo_grupo, descricao_grupo );
+        ANALISA.ATUALIZA_PRODUTOS_SUBGRUPO( codigo_secao, codigo_grupo, codigo_subgrupo, descricao_subgrupo );
+    End If;
+    -- Utilizar codigo_secao, codigo_grupo, codigo_subgrupo nas Procedures abaixo --
+    ANALISA.MPO_ATUALIZA_PRODUTO( extracaoOracle.produtos );
+    ANALISA.ATUALIZA_PRODUTOS_EAN( extracaoOracle.ean );
+
+END;
