@@ -37,7 +37,7 @@ DECLARE
     , fabricante_cnpj            
     , status_compra              
     , status_venda               
-    , '04011090' ncm                        
+    , ncm                        
     , embalagem_industria        
     , sazonalidade               
     , data_hora_inclusao         
