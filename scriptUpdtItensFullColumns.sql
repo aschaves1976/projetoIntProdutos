@@ -873,362 +873,606 @@ BEGIN
        WHILE ln_counter IS NOT NULL LOOP
          ln_cnt := ln_cnt + 1;
          SAVEPOINT INICIO;
-
-         UPDATE   mtl_system_items_b   msib
-           SET
-                  msib.attribute18                = l_ncm_ipi(ln_counter)
-                , msib.attribute17                = l_ncm_icms(ln_counter)
-                , msib.attribute19                = l_fabricacao_propria(ln_counter)
-                , msib.global_attribute9          = l_codigo_cest(ln_counter)
-                , msib.attribute6                 = l_registro_ms(ln_counter)
-				, msib.primary_uom_code           = l_unidade_medida(ln_counter)
-                , msib.global_attribute3          = l_origem(ln_counter)
-                , msib.global_attribute2          = l_eh_revenda(ln_counter)
-                , msib.end_date_active            = l_data_fora_linha(ln_counter)
-                , msib.purchasing_enabled_flag    = l_status_compra(ln_counter)
-                , msib.invoiceable_item_flag      = l_status_venda(ln_counter)
-                --, msib.creation_date              = l_data_hora_inclusao(ln_counter)
-                , msib.attribute1                 = l_principio_ativo(ln_counter)
-                , msib.attribute9                 = l_qtd_apresentacao(ln_counter)
-                , msib.attribute2                 = l_embalagem_industria(ln_counter)
-                , msib.unit_weight                = l_peso(ln_counter)
-                , msib.attribute7                 = l_dosagem(ln_counter)
-                , msib.attribute8                 = l_nome_comercial(ln_counter)
-                , msib.unit_length                = l_dimensao_com(ln_counter)
-                , msib.unit_width                 = l_dimensao_lag(ln_counter)
-                , msib.unit_height                = l_dimensao_alt(ln_counter)
-                , msib.attribute16                = l_id_campanha(ln_counter)
-                , msib.inventory_item_status_code = l_status_item(ln_counter)
-                , msib.attribute15                = l_icms_desonerado(ln_counter)
-                , msib.attribute3                 = l_motivo_isencao_ms(ln_counter)
-                , msib.last_update_date   = SYSDATE
-         WHERE 1=1
-           AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
-           AND msib.organization_id       = 174
-         ;
-         UPDATE   mtl_system_items_tl   msit
-           SET
-                  msit.description        = l_descricao(ln_counter)
-                , msit.last_update_date   = SYSDATE
-         WHERE 1=1
-           AND msit.inventory_item_id     = l_id_sequencial(ln_counter)
-           AND msit.organization_id       = 174
-         ;
+         IF l_ncm_ipi(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute18        = l_ncm_ipi(ln_counter)
+                  , msib.last_update_date   = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_ncm_icms(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute17        = l_ncm_icms(ln_counter)
+                  , msib.last_update_date   = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_fabricacao_propria(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute19                = l_fabricacao_propria(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_codigo_cest(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.global_attribute9          = l_codigo_cest(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_registro_ms(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute6                 = l_registro_ms(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_unidade_medida(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.primary_uom_code           = l_unidade_medida(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_origem(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.global_attribute3          = l_origem(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_eh_revenda(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.global_attribute2          = l_eh_revenda(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_data_fora_linha(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.end_date_active            = l_data_fora_linha(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_status_compra(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.purchasing_enabled_flag    = l_status_compra(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_status_venda(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.invoiceable_item_flag      = l_status_venda(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_principio_ativo(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute1                 = l_principio_ativo(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_qtd_apresentacao(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute9                 = l_qtd_apresentacao(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_embalagem_industria(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute2                 = l_embalagem_industria(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_peso(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.unit_weight                = l_peso(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_dosagem(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute7                 = l_dosagem(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_nome_comercial(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute8                 = l_nome_comercial(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_dimensao_com(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.unit_length                = l_dimensao_com(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_dimensao_lag(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.unit_width                 = l_dimensao_lag(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_dimensao_alt(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.unit_height                = l_dimensao_alt(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_id_campanha(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute16                = l_id_campanha(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_status_item(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.inventory_item_status_code = l_status_item(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_icms_desonerado(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute15                = l_icms_desonerado(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_motivo_isencao_ms(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_b   msib
+             SET
+                    msib.attribute3                 = l_motivo_isencao_ms(ln_counter)
+                  , msib.last_update_date           = SYSDATE
+           WHERE 1=1
+             AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msib.organization_id       = 174
+           ;
+         END IF;
+         IF l_descricao(ln_counter) IS NOT NULL THEN
+           UPDATE   mtl_system_items_tl   msit
+             SET
+                    msit.description        = l_descricao(ln_counter)
+                  , msit.last_update_date   = SYSDATE
+           WHERE 1=1
+             AND msit.inventory_item_id     = l_id_sequencial(ln_counter)
+             AND msit.organization_id       = 174
+           ;
+         END IF;
          -- 'FISCAL_CLASSIFICATION'
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'FISCAL_CLASSIFICATION'
-             , p_name_to_create     => l_ncm(ln_counter)
-           )
-         ;
-         --	 
+         IF l_ncm(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'FISCAL_CLASSIFICATION'
+               , p_name_to_create     => l_ncm(ln_counter)
+             )
+           ;
+         END IF;	 
          -- Fabricante --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Fabricante'
-             , p_name_to_create     => l_fabricante_cnpj(ln_counter)
-           )
-         ;
-         --
+         IF l_fabricante_cnpj(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Fabricante'
+               , p_name_to_create     => l_fabricante_cnpj(ln_counter)
+             )
+           ;
+         END IF;
          -- Marca GC -- 
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Marca GC'
-             , p_name_to_create     => l_marca_gc(ln_counter)
-           )
-         ;
-		 --
+         IF l_marca_gc(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Marca GC'
+               , p_name_to_create     => l_marca_gc(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Marca' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Marca'
-             , p_name_to_create     => l_marca(ln_counter)
-           )
-         ;
+         IF l_marca(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Marca'
+               , p_name_to_create     => l_marca(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Familia Produto' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Familia Produto'
-             , p_name_to_create     => l_familia(ln_counter)
-           )
-         ;
+         IF l_familia(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Familia Produto'
+               , p_name_to_create     => l_familia(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Sazonalidade' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Sazonalidade'
-             , p_name_to_create     => l_sazonalidade(ln_counter)
-           )
-         ;
+         IF l_sazonalidade(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Sazonalidade'
+               , p_name_to_create     => l_sazonalidade(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Termolabil' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Termolabil'
-             , p_name_to_create     => l_Termolabil(ln_counter)
-           )
-         ;
+         IF l_Termolabil(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Termolabil'
+               , p_name_to_create     => l_Termolabil(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Requer CRM' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Requer CRM'
-             , p_name_to_create     => l_requer_crm(ln_counter)
-           )
-         ;
+         IF l_requer_crm(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Requer CRM'
+               , p_name_to_create     => l_requer_crm(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Venda Controlada' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Venda Controlada'
-             , p_name_to_create     => l_venda_controlada(ln_counter)
-           )
-         ;
-        -- Retencao de Receita --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Retenção Receita'
-             , p_name_to_create     => l_retencao_receita(ln_counter)
-           )
-         ;
+         IF l_venda_controlada(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Venda Controlada'
+               , p_name_to_create     => l_venda_controlada(ln_counter)
+             )
+           ;
+         END IF;
+         -- Retencao de Receita --
+         IF l_retencao_receita(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Retenção Receita'
+               , p_name_to_create     => l_retencao_receita(ln_counter)
+             )
+           ;
+         END IF;
          -- 'Farmácia Popular' --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Farmácia Popular'
-             , p_name_to_create     => l_farmacia_popular(ln_counter)
-           )
-         ;
-        -- Livro Portaria 344 --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Livro Portaria 344'
-             , p_name_to_create     => l_livro_portaria_344(ln_counter)
-           )
-         ;
-        -- Classe Terapeutica --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Classe Terapeutica'
-             , p_name_to_create     => l_classe_terapeutica(ln_counter)
-           )
-         ;
-        -- Controle de Rastreabilidade --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Controle de Rastreabilidade'
-             , p_name_to_create     => l_controle_rastreabilidade(ln_counter)
-           )
-         ;
-        -- Tipo Receita --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Tipo Receita'
-             , p_name_to_create     => l_tipo_receita(ln_counter)
-           )
-         ;
-        -- Tipo Medicamento --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Tipo Medicamento'
-             , p_name_to_create     => l_tipo_medicamento(ln_counter)
-           )
-         ;
-        -- Lista PNU --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Lista PNU'
-             , p_name_to_create     => l_lista_pnu(ln_counter)
-           )
-         ;
-        -- Parametro de PBM --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Parametro de PBM'
-             , p_name_to_create     => l_pbm(ln_counter)
-           )
-         ;
-        -- Comprador --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Comprador'
-             , p_name_to_create     => l_comprador(ln_counter)
-           )
-         ;
-        -- Pacote de Produto --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Pacote de Produto'
-             , p_name_to_create     => l_pacote_produto(ln_counter)
-           )
-         ;
-        -- Pacote de Produto --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Pacote de Produto'
-             , p_name_to_create     => l_pacote_produto(ln_counter)
-           )
-         ;
+         IF l_farmacia_popular(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Farmácia Popular'
+               , p_name_to_create     => l_farmacia_popular(ln_counter)
+             )
+           ;
+         END IF;
+         -- Livro Portaria 344 --
+         IF l_livro_portaria_344(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Livro Portaria 344'
+               , p_name_to_create     => l_livro_portaria_344(ln_counter)
+             )
+           ;
+         END IF;
+         -- Classe Terapeutica --
+         IF l_classe_terapeutica(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Classe Terapeutica'
+               , p_name_to_create     => l_classe_terapeutica(ln_counter)
+             )
+           ;
+         END IF;
+         -- Controle de Rastreabilidade --
+         IF l_controle_rastreabilidade(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Controle de Rastreabilidade'
+               , p_name_to_create     => l_controle_rastreabilidade(ln_counter)
+             )
+           ;
+         END IF;
+         -- Tipo Receita --
+         IF l_tipo_receita(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Tipo Receita'
+               , p_name_to_create     => l_tipo_receita(ln_counter)
+             )
+           ;
+         END IF;
+         -- Tipo Medicamento --
+         IF l_tipo_medicamento(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Tipo Medicamento'
+               , p_name_to_create     => l_tipo_medicamento(ln_counter)
+             )
+           ;
+         END IF;
+         -- Lista PNU --
+         IF l_lista_pnu(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Lista PNU'
+               , p_name_to_create     => l_lista_pnu(ln_counter)
+             )
+           ;
+         END IF;
+         -- Parametro de PBM --
+         IF l_pbm(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Parametro de PBM'
+               , p_name_to_create     => l_pbm(ln_counter)
+             )
+           ;
+         END IF;
+         -- Comprador --
+         IF l_comprador(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Comprador'
+               , p_name_to_create     => l_comprador(ln_counter)
+             )
+           ;
+         END IF;
+         -- Pacote de Produto --
+         IF l_pacote_produto(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Pacote de Produto'
+               , p_name_to_create     => l_pacote_produto(ln_counter)
+             )
+           ;
+         END IF;
          -- Informacoes DUN --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Informacoes DUN'
-             , p_name_to_create     => l_informacao_dun(ln_counter)
-           )
-         ;
+         IF l_informacao_dun(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Informacoes DUN'
+               , p_name_to_create     => l_informacao_dun(ln_counter)
+             )
+           ;
+         END IF;
          -- Uso Contínuo --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Uso Contínuo'
-             , p_name_to_create     => l_produto_uso_continuo(ln_counter)
-           )
-         ;
+         IF l_produto_uso_continuo(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Uso Contínuo'
+               , p_name_to_create     => l_produto_uso_continuo(ln_counter)
+             )
+           ;
+         END IF;
          -- Uso e Consumo --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Uso e Consumo'
-             , p_name_to_create     => l_uso_consumo(ln_counter)
-           )
-         ;
+         IF l_uso_consumo(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Uso e Consumo'
+               , p_name_to_create     => l_uso_consumo(ln_counter)
+             )
+           ;
+         END IF;
          -- Embalagem Padrão --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Embalagem Padrão'
-             , p_name_to_create     => l_embalagem_padrao(ln_counter)
-           )
-         ;
+         IF l_embalagem_padrao(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Embalagem Padrão'
+               , p_name_to_create     => l_embalagem_padrao(ln_counter)
+             )
+           ;
+         END IF;
          -- Mínimo múltiplo de compra --
-         category_p
-           (
-               p_category_id        => ln_category_id
-             , p_structure_id       => ln_structure_id
-             , p_category_set_id    => ln_category_set_id
-             , p_inventory_item_id  => l_id_sequencial(ln_counter)
-             , p_organization_id    => 174
-             , p_category_set_name  => 'Mínimo múltiplo de compra'
-             , p_name_to_create     => l_minmultcompra(ln_counter)
-           )
-         ;
+         IF l_minmultcompra(ln_counter) IS NOT NULL THEN
+           category_p
+             (
+                 p_category_id        => ln_category_id
+               , p_structure_id       => ln_structure_id
+               , p_category_set_id    => ln_category_set_id
+               , p_inventory_item_id  => l_id_sequencial(ln_counter)
+               , p_organization_id    => 174
+               , p_category_set_name  => 'Mínimo múltiplo de compra'
+               , p_name_to_create     => l_minmultcompra(ln_counter)
+             )
+           ;
+         END IF;
          --
 		 COMMIT;
          <<PROXIMO>>

@@ -11,4 +11,21 @@
 =BU2&BV2&BW2&BX2&BY2
 
 
-' || CHR(38) || '
+& = ' || CHR(38) || '
+
+, '',, '',
+
+, , , ,
+
+'LEITE L'OCCITANE CORP 250ML'           = 'LEITE L'|| CHR(39) ||'OCCITANE CORP 250ML'
+'PALMILHA DR SCHOLL'S MASS GEL 1PAR'    = 'PALMILHA DR SCHOLL'|| CHR(39) ||'S MASS GEL 1PAR'
+'SAB L'OCCITANE CORP 250ML'             = 'SAB L'|| CHR(39) ||'OCCITANE CORP 250ML'
+'SAB L'OCCITANE KARITE 100G'            = 'SAB L'|| CHR(39) ||'OCCITANE KARITE 100G'
+'SAB L'OCCITANE KARITE 500ML'           = 'SAB L'|| CHR(39) ||'OCCITANE KARITE 500ML'
+'SAB L'OCCITANE 50G'                    = 'SAB L'|| CHR(39) ||'OCCITANE 50G'
+'CALCANHEIRA DR SCHOLL'S 1PAR'          = 'CALCANHEIRA DR SCHOLL'|| CHR(39) ||'S 1PAR'
+'M' || CHR(38) || 'M'S'                 = 'M' || CHR(38) || 'M'|| CHR(39) ||'S'
+'CHOC M' || CHR(38) || 'M'S POUCH 200G' = 'CHOC M' || CHR(38) || 'M'|| CHR(39) ||'S POUCH 200G'
+'SNICKER'S'                             = 'SNICKER'|| CHR(39) ||'S'
+'DELIN PAYOT LIQ D'AGUA'                = 'DELIN PAYOT LIQ D'|| CHR(39) ||'AGUA'
+'UVA'SO'                                = 'UVA'|| CHR(39) ||'SO'
