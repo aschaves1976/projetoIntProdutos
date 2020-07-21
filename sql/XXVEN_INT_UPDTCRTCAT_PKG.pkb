@@ -321,7 +321,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
       lv_return_status         VARCHAR2(32000);
       ln_errorcode             NUMBER;
       ln_msg_count             PLS_INTEGER;
-      lv_msg_data              PLS_INTEGER;
+      lv_msg_data              VARCHAR2(32000);
       ln_parent_category_id    NUMBER;
       ln_old_category_id       NUMBER;
 
@@ -410,7 +410,8 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
           AND mcs.structure_id      = mcb.structure_id
           AND mct.language          = 'PTB'
           AND mct.category_id       = mcb.category_id
-          AND mct.description       = p_name_to_create
+          -- AND mct.description       = p_name_to_create
+          AND mcb.segment1          = p_name_to_create
         ;
 
         IF ln_old_category_id IS NOT NULL THEN
@@ -882,7 +883,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute18        = l_ncm_ipi(ln_counter)
-                    , msib.last_update_date   = SYSDATE
+--                    , msib.last_update_date   = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -892,7 +893,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute17        = l_ncm_icms(ln_counter)
-                    , msib.last_update_date   = SYSDATE
+--                    , msib.last_update_date   = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -902,7 +903,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute19                = l_fabricacao_propria(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -912,7 +913,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.global_attribute9          = l_codigo_cest(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -922,7 +923,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute6                 = l_registro_ms(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -932,7 +933,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.primary_uom_code           = l_unidade_medida(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -942,7 +943,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.global_attribute3          = l_origem(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -952,7 +953,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.global_attribute2          = l_eh_revenda(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -962,7 +963,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.end_date_active            = l_data_fora_linha(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -972,7 +973,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.purchasing_enabled_flag    = l_status_compra(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -982,7 +983,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.invoiceable_item_flag      = l_status_venda(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -992,7 +993,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute1                 = l_principio_ativo(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1002,7 +1003,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute9                 = l_qtd_apresentacao(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1012,7 +1013,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute2                 = l_embalagem_industria(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1022,7 +1023,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.unit_weight                = l_peso(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1032,7 +1033,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute7                 = l_dosagem(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1042,7 +1043,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute8                 = l_nome_comercial(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1052,7 +1053,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.unit_length                = l_dimensao_com(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1062,7 +1063,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.unit_width                 = l_dimensao_lag(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1072,7 +1073,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.unit_height                = l_dimensao_alt(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1082,7 +1083,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute16                = l_id_campanha(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1092,7 +1093,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.inventory_item_status_code = l_status_item(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1102,7 +1103,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute15                = l_icms_desonerado(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1112,7 +1113,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_b   msib
                SET
                       msib.attribute3                 = l_motivo_isencao_ms(ln_counter)
-                    , msib.last_update_date           = SYSDATE
+                    -- , msib.last_update_date           = SYSDATE
              WHERE 1=1
                AND msib.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msib.organization_id       = 174
@@ -1122,7 +1123,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              UPDATE   mtl_system_items_tl   msit
                SET
                       msit.description        = l_descricao(ln_counter)
-                    , msit.last_update_date   = SYSDATE
+                    -- , msit.last_update_date   = SYSDATE
              WHERE 1=1
                AND msit.inventory_item_id     = l_id_sequencial(ln_counter)
                AND msit.organization_id       = 174

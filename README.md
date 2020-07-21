@@ -19,7 +19,7 @@ Atualizar ou Criar novas categorias para Produtos.
 
 | Program Name | Short Name | Description | Executable | Short Name | Description | Execution File Name |
 | -- | -- | -- | -- | -- | -- | -- |
-|  XXVEN - INV Carga de Categorias de Produtos (CMV) | XXVEN_INT_UPDTCRTCAT | Carga de Categorias de Produtos |  XXVEN_INT_UPDTCRTCAT | XXVEN_INT_UPDTCRTCAT | Carga de Categorias de Produtos | XXVEN_AR_RCPTS_CREDITCARD_PKG.MAIN_P |
+|  XXVEN - INV Carga de Categorias de Produtos (CMV) | XXVEN_INT_UPDTCRTCAT | Carga de Categorias de Produtos |  XXVEN_INT_UPDTCRTCAT | XXVEN_INT_UPDTCRTCAT | Carga de Categorias de Produtos | XXVEN_INT_UPDTCRTCAT_PKG.CRTUPD_ITEM_CATEGORIES_P |
 
 ## Responsibility
 
@@ -29,8 +29,8 @@ Atualizar ou Criar novas categorias para Produtos.
 
 ## File
 
- - XXVEN_AR_RCPTS_CREDITCARD_PKG.pks
- - XXVEN_AR_RCPTS_CREDITCARD_PKG.pkb
+ - XXVEN_INT_UPDTCRTCAT_PKG.pks
+ - XXVEN_INT_UPDTCRTCAT_PKG.pkb
  - XXVEN_CARGA_FULLITEMS_TB.tab
  - XXVEN_INT_ITEMS_CMV_VW.vw
 

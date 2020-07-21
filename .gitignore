@@ -1,4 +1,4 @@
 scriptInsertFabricanteMarcaGcCustomTable.sql
 exportar.csv
 *.xlsx
-
+*.old
