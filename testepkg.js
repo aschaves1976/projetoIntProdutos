@@ -46,8 +46,7 @@ async function run() {
           , codigo_cest                VARCHAR2(150)  
           , data_inclusao              DATE           
           , data_fora_linha            DATE           
-          , fabricante_cnpj            VARCHAR2(40)   
-          --, fabricante_divisao         VARCHAR2(40)   
+          , fabricante_cnpj            VARCHAR2(4000)   
           , status_compra              VARCHAR2(40)   
           , status_venda               VARCHAR2(40)   
           , ncm                        VARCHAR2(40)   
@@ -114,7 +113,7 @@ async function run() {
     END XXVEN_INT_ITENS_PKG;
     `,
     `
-    create or replace PACKAGE BODY XXVEN_INT_ITENS_PKG AS
+    CREATE OR REPLACE PACKAGE BODY XXVEN_INT_ITENS_PKG AS
            
       FUNCTION GET_ITENS_F( p_date IN VARCHAR2) RETURN prod_cab PIPELINED
       IS
@@ -122,15 +121,16 @@ async function run() {
         lv_date   VARCHAR2(40);
         ld_date   DATE;
       
-        TYPE typ_rec IS RECORD (segment1 mtl_categories.segment1%TYPE
-                               ,segment2 mtl_categories.segment2%TYPE
-                               ,segment3 mtl_categories.segment3%TYPE 
-                               ,segment4 mtl_categories.segment4%TYPE 
-                               ,segment5 mtl_categories.segment5%TYPE 
-                               ,segment6 mtl_categories.segment6%TYPE 
-                               ,segment8 mtl_categories.segment8%TYPE
-                               ,attribute1 mtl_categories.attribute1%TYPE
+        TYPE typ_rec IS RECORD (segment1    mtl_categories.segment1%TYPE
+                               ,segment2    mtl_categories.segment2%TYPE
+                               ,segment3    mtl_categories.segment3%TYPE 
+                               ,segment4    mtl_categories.segment4%TYPE 
+                               ,segment5    mtl_categories.segment5%TYPE 
+                               ,segment6    mtl_categories.segment6%TYPE 
+                               ,segment8    mtl_categories.segment8%TYPE
+                               ,attribute1  mtl_categories.attribute1%TYPE
                                ,category_id mtl_categories.category_id%TYPE
+                               ,description mtl_categories_tl.description%TYPE
                                )
         ;
         vretorno                   typ_rec;
@@ -144,15 +144,15 @@ async function run() {
         vcomprador                 typ_rec;
         vfamilia_prod	             typ_rec;
         vsazonalidade	             typ_rec;
-        vtermolabil	             typ_rec;
-        vrequer_CRM	             typ_rec;
+        vtermolabil	               typ_rec;
+        vrequer_CRM	               typ_rec;
         vvenda_controlada	         typ_rec;
         vretencao_receita	         typ_rec;
         vfarmacia_popular	         typ_rec;
-        vlivro_344	             typ_rec;
-        vclasse_teraupetica	     typ_rec;
+        vlivro_344	               typ_rec;
+        vclasse_teraupetica	       typ_rec;
         vcontrole_rastreabilidade  typ_rec;
-        vpacote_produto	         typ_rec;
+        vpacote_produto	           typ_rec;
         vtipo_receita	             typ_rec;
         vtipo_medicamento          typ_rec;     
         vlista_pnu                 typ_rec;
@@ -179,21 +179,27 @@ async function run() {
         
         BEGIN
                          
-          FOR r_seg in (SELECT mc.segment1
-                              ,mc.segment2
-                              ,mc.segment3
-                              ,mc.segment4
-                              ,mc.segment5 
-                              ,MC.SEGMENT6 -- criar campo na tabela 
-                              ,MC.SEGMENT8 -- criar campo na tabela
-                              ,mc.attribute1 -- ibpt
-                              ,mc.category_id -- id
-                          FROM mtl_category_sets mcs
-                              ,mtl_categories  mc
-                              ,mtl_item_categories mic
-                              ,mtl_system_items_b msi
-                              ,mtl_parameters mp
-                         WHERE mcs.category_set_name = pcategory_set_name
+          FOR r_seg in (SELECT 
+                                  mc.segment1
+                                , mc.segment2
+                                , mc.segment3
+                                , mc.segment4
+                                , mc.segment5 
+                                , mc.segment6
+                                , mc.segment8
+                                , mc.attribute1  -- ibpt
+                                , mc.category_id -- id
+                                , mct.description
+                          FROM    mtl_category_sets   mcs
+                                , mtl_categories      mc
+                                , mtl_item_categories mic
+                                , mtl_system_items_b  msi
+                                , mtl_parameters      mp
+                                , mtl_categories_tl   mct
+                         WHERE 1=1
+                           AND mct.language          = USERENV('LANG')
+                           AND mct.category_id       = mc.category_id
+                           AND mcs.category_set_name = pcategory_set_name
                            AND mcs.structure_id      = mc.structure_id
                            AND mc.category_id        = mic.category_id
                            AND mcs.category_set_id   = mic.category_set_id
@@ -212,7 +218,8 @@ async function run() {
             vretorno.segment6    := r_seg.segment6;  -- criar campo na tabela
             vretorno.segment8    := r_seg.segment8;  -- criar campo na tabela 
             vretorno.attribute1  := r_seg.attribute1; 
-            vretorno.category_id := r_seg.category_id; 
+            vretorno.category_id := r_seg.category_id;
+            vretorno.description := r_seg.description;
           END LOOP;
         
           RETURN vretorno;
@@ -551,8 +558,7 @@ async function run() {
           retset.data_inclusao               :=    c_itens.data_inclusao;
           retset.data_fora_linha             :=    c_itens.data_fora_linha;
           retset.marca_gc                    :=    vmarca_gc.segment1;
-          retset.fabricante_cnpj             :=    vfabricante.segment1;
-          -- retset.fabricante_divisao          :=    vfabricante.segment3;
+          retset.fabricante_cnpj             :=    vfabricante.description;
           retset.status_compra               :=    c_itens.status_compra;
           retset.status_venda                :=    c_itens.status_venda;
           retset.ncm                         :=    SUBSTR(vclassif_fiscal.segment1, 1, 8);
@@ -574,7 +580,6 @@ async function run() {
           retset.dimensao_lag                :=    c_itens.largura;
           retset.dimensao_alt                :=    c_itens.altura;
           retset.informacao_dun              :=    vinfodun.segment1;   
-          --retset.uso_continuo                :=    vusocontinuo.segment1;    
           retset.pacote_produto              :=    vpackprod.segment1;
           retset.origem                      :=    c_itens.origem;
           retset.unidade_medida_fracionado   :=    c_itens.unidade_medida_fracionado;
@@ -617,7 +622,7 @@ async function run() {
     `
 ]
 
-    
+ 
 
     // Create Package 
     for (const s of stmts) {
