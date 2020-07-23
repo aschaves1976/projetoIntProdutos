@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  Arquivo criado - Sexta-feira-Julho-03-2020   
+--  Arquivo criado - Quinta-feira-Julho-23-2020   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Table XXVEN_CARGA_FULLITEMS_TB
@@ -78,7 +78,8 @@
 	"ICMS_DESONERADO" VARCHAR2(240 BYTE), 
 	"MOTIVO_ISENCAO_MS" VARCHAR2(240 BYTE), 
 	"CREATION_DATE" DATE, 
-	"EH_REVENDA" VARCHAR2(240 BYTE)
+	"EH_REVENDA" VARCHAR2(240 BYTE), 
+	"DESCRICAO_FABRICANTE" VARCHAR2(4000 BYTE)
    ) SEGMENT CREATION IMMEDIATE 
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
  NOCOMPRESS LOGGING

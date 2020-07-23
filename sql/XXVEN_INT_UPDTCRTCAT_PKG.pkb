@@ -109,10 +109,14 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              , icms_desonerado            
              , motivo_isencao_ms          
              , eh_revenda
+             , cust.descricao_fabricante
         FROM   xxven_carga_fullitems_tb  cust
       WHERE 1=1
         AND cust.id_sequencial = NVL ( p_item_id, cust.id_sequencial )
     ;
+
+    TYPE lt_item   IS TABLE OF xxven_carga_fullitems_tb%ROWTYPE INDEX BY PLS_INTEGER;
+    l_item         lt_item;
 
     TYPE lt_id_sequencial               IS TABLE OF xxven_carga_fullitems_tb.id_sequencial%TYPE   INDEX BY PLS_INTEGER;
     TYPE lt_produto                     IS TABLE OF xxven_carga_fullitems_tb.produto%TYPE   INDEX BY PLS_INTEGER;
@@ -186,6 +190,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
     TYPE lt_icms_desonerado             IS TABLE OF xxven_carga_fullitems_tb.icms_desonerado%TYPE   INDEX BY PLS_INTEGER;
     TYPE lt_motivo_isencao_ms           IS TABLE OF xxven_carga_fullitems_tb.motivo_isencao_ms%TYPE   INDEX BY PLS_INTEGER;
     TYPE lt_eh_revenda                  IS TABLE OF xxven_carga_fullitems_tb.eh_revenda%TYPE   INDEX BY PLS_INTEGER;
+    TYPE lt_descricao_fabricante        IS TABLE OF xxven_carga_fullitems_tb.descricao_fabricante%TYPE   INDEX BY PLS_INTEGER;
 
     l_id_sequencial                 lt_id_sequencial;
     l_produto                       lt_produto;
@@ -259,6 +264,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
     l_icms_desonerado               lt_icms_desonerado;
     l_motivo_isencao_ms             lt_motivo_isencao_ms;
     l_eh_revenda                    lt_eh_revenda;
+    l_descricao_fabricante          lt_descricao_fabricante;
 
     ln_limit                        PLS_INTEGER := 100;
     ln_cnt                          PLS_INTEGER := 0;
@@ -313,6 +319,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
         , p_organization_id    IN NUMBER
         , p_category_set_name  IN VARCHAR2  --> 'Fabricante' / 'Marca GC'
         , p_name_to_create     IN VARCHAR2  --> xxven_carga_fullitems_tb.FABRICANTE
+        , p_description        IN VARCHAR2  DEFAULT NULL--> Categroy Description
       )
     IS
 
@@ -346,7 +353,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
             , p_category_set_id     => p_category_set_id
             , p_structure_id        => p_structure_id
             , p_status              => 'E'
-            , p_description         => 'FAB_CATEGORY_P -> Unable to fetch the category set(' ||p_category_set_name || ') details :' || SQLERRM
+            , p_description         => 'CATEGORY_P -> Unable to fetch the category set(' ||p_category_set_name || ') details :' || SQLERRM
             )
           ;
       END;
@@ -413,7 +420,40 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
           -- AND mct.description       = p_name_to_create
           AND mcb.segment1          = p_name_to_create
         ;
-
+        -- Atualizar a Descricao da Categoria antes de associar --
+        IF p_description IS NOT NULL AND 
+           p_description <> NVL(l_category_rec.description,'º')		   
+        THEN
+          l_category_rec.description := p_description;
+          UPDATE mtl_categories_tl
+            SET
+                   description        = p_description
+                 , last_update_date   = SYSDATE
+                 , last_updated_by    = fnd_global.user_id
+                 , last_update_login  = fnd_global.login_id
+          WHERE 1=1
+            AND category_id  = p_category_id
+          ;
+          -- Descontinuado o uso da API
+          -- Motivo: The language in which the description is updated is the currently set language for the session
+          --
+          /*
+          inv_item_category_pub.Update_Category_Description
+            (
+                p_api_version      => 1.0
+              , p_init_msg_list    => fnd_api.g_true
+              , p_commit           => fnd_api.g_true
+              , x_return_status    => lv_return_status
+              , x_errorcode        => ln_errorcode
+              , x_msg_count        => ln_msg_count
+              , x_msg_data         => lv_msg_data
+              , p_category_id      => p_category_id
+              , p_description      => p_description
+            )
+          ;
+          */
+        END IF;
+        --
         IF ln_old_category_id IS NOT NULL THEN
           inv_item_category_pub.update_category_assignment
             (
@@ -539,6 +579,9 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
           l_category_rec.summary_flag := 'N';
           l_category_rec.enabled_flag := 'Y';
           l_category_rec.segment1     := p_name_to_create;
+          IF p_description IS NOT NULL THEN
+            l_category_rec.description := p_description;
+          END IF;
           --
           -- Calling the api to create category --
           inv_item_category_pub.create_category
@@ -791,7 +834,8 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
   --  
   BEGIN
     BEGIN
-      set_log_p (p_msg => 'Start Time...........: ' || TO_CHAR( SYSDATE,'DD/MM/RR HH24:MI:SS' ) );    
+      set_log_p (p_msg => 'Start Time...........: ' || TO_CHAR( SYSDATE,'DD/MM/RR HH24:MI:SS' ) );
+      fnd_file.put_line(fnd_file.log, ' Parameter: ' || CHR(13) || '   Item_Id: '|| p_item_id || CHR(13) );
 
       ln_time    := dbms_utility.get_time;
       ln_limit   := 5000; 
@@ -800,7 +844,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
       OPEN c_item;
         LOOP
          FETCH c_item
-           BULK COLLECT INTO
+           BULK COLLECT INTO -- l_item
                 l_id_sequencial
               , l_produto
               , l_descricao
@@ -873,9 +917,12 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
               , l_icms_desonerado
               , l_motivo_isencao_ms
               , l_eh_revenda
+              , l_descricao_fabricante
          LIMIT ln_limit
          ;
+
          ln_counter := l_id_sequencial.FIRST;
+         -- ln_counter := l_item.FIRST;
          WHILE ln_counter IS NOT NULL LOOP
            ln_cnt := ln_cnt + 1;
            SAVEPOINT INICIO;
@@ -1154,6 +1201,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
                  , p_organization_id    => 174
                  , p_category_set_name  => 'Fabricante'
                  , p_name_to_create     => l_fabricante_cnpj(ln_counter)
+                 , p_description        => l_descricao_fabricante(ln_counter)
                )
              ;
            END IF;
@@ -1480,12 +1528,14 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INT_UPDTCRTCAT_PKG AS
              ;
            END IF;
            --
-  		 COMMIT;
+           COMMIT;
            <<PROXIMO>>
            ln_counter := l_id_sequencial.NEXT(ln_counter);
+           -- ln_counter := l_item.NEXT(ln_counter);
            NULL;
          END LOOP;
          EXIT WHEN l_id_sequencial.COUNT < ln_limit;
+         -- EXIT WHEN l_item.COUNT < ln_limit;
        END LOOP;
       CLOSE c_item;
       set_log_p (p_msg => 'End Time...........: ' || TO_CHAR( SYSDATE,'DD/MM/RR HH24:MI:SS' ) || ' - ' || ((dbms_utility.get_time - ln_time)/100) || ' seconds....' );
