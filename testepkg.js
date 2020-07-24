@@ -28,92 +28,93 @@ async function run() {
     // Create a PL/SQL package that uses a RECORD
     const stmts = [
     `
-    CREATE OR REPLACE PACKAGE xxven_int_itens_pkg AUTHID CURRENT_USER AS
-      TYPE lt_prod_cab_tp IS RECORD
-        (
-            id_sequencial              NUMBER
-          , produto                    VARCHAR2(240)
-          , descricao                  VARCHAR2(240)  
-          , unidade_medida             VARCHAR2(3)    
-          , secao_produto              VARCHAR2(40)   
-          , grupo_produto              VARCHAR2(40)   
-          , subgrupo_produto           VARCHAR2(40)   
-          , categoria_produto          VARCHAR2(40)   
-          , sub_categoria              VARCHAR2(40)   
-          , apresentacao               VARCHAR2(40)   
-          , tipo_secao                 VARCHAR2(40)   
-          , marca                      VARCHAR2(40)   
-          , codigo_cest                VARCHAR2(150)  
-          , data_inclusao              DATE           
-          , data_fora_linha            DATE           
-          , fabricante_cnpj            VARCHAR2(4000)   
-          , status_compra              VARCHAR2(40)   
-          , status_venda               VARCHAR2(40)   
-          , ncm                        VARCHAR2(40)   
-          , embalagem_industria        VARCHAR2(40)   
-          , sazonalidade               VARCHAR2(40)   
-          , data_hora_inclusao         DATE           
-          , data_hora_ultima_alteracao DATE           
-          , envio_status               NUMBER
-          , envio_data_hora            TIMESTAMP(6)   
-          , envio_erro                 VARCHAR2(4000) 
-          , qtd_apresentacao           VARCHAR2(240)
-          , status_item                VARCHAR2(30)   
-          , tipo_medicamento           VARCHAR2(240)
-          , comercializavel            CHAR(1)        
-          , marca_gc                   VARCHAR2(40)   
-          , pbm                        VARCHAR2(20)   
-          , peso                       NUMBER
-          , familia                    VARCHAR2(60)   
-          , comprador                  VARCHAR2(60)   
-          , tipo_reposicao             VARCHAR2(100)  
-          , dimensao_uni_medida        VARCHAR2(60)   
-          , dimensao_com               NUMBER
-          , dimensao_lag               NUMBER
-          , dimensao_alt               NUMBER
-          , informacao_dun             VARCHAR2(240)
-          , pacote_produto             VARCHAR2(240)
-          , origem                     VARCHAR2(2)
-          , unidade_medida_fracionado  VARCHAR2(40)
-          , id_campanha                NUMBER
-          , ean                        VARCHAR2(20)   
-          , ean_quantidade_embalagem   VARCHAR2(240)
-          , retencao_receita           VARCHAR2(25)   
-          , venda_controlada           VARCHAR2(25)   
-          , livro_portaria_344         VARCHAR2(25)   
-          , registro_ms                VARCHAR2(240)  
-          , tipo_receita               VARCHAR2(240)  
-          , farmacia_popular           VARCHAR2(240)  
-          , controle_rastreabilidade   VARCHAR2(240)  
-          , principio_ativo            VARCHAR2(240)  
-          , dosagem                    VARCHAR2(240)  
-          , nome_comercial             VARCHAR2(80)   
-          , requer_crm                 VARCHAR2(240)  
-          , classe_terapeutica         VARCHAR2(240)  
-          , termolabil                 VARCHAR2(40)   
-          , produto_uso_continuo       VARCHAR2(25)   
-          , lista_pnu                  VARCHAR2(240)  
-          , uso_consumo                VARCHAR2(30)
-          , ncm_icms                   VARCHAR2(240)
-          , ncm_ipi                    VARCHAR2(240)
-          , fabricacao_propria         VARCHAR2(240)
-          , embalagem_padrao           VARCHAR2(240)
-          , caixaria                   VARCHAR2(240)
-          , minmultcompra              VARCHAR2(240)
-          , icms_desonerado            VARCHAR2(240)
-          , motivo_isencao_ms          VARCHAR2(240)
-          , situacao_estadual          VARCHAR2(240)
-        )
-      ;  
-      
-      TYPE prod_cab        IS TABLE OF lt_prod_cab_tp;
-      
-      FUNCTION GET_ITENS_F( p_date IN VARCHAR2 ) RETURN prod_cab PIPELINED;
-      
+    create or replace PACKAGE xxven_int_itens_pkg AUTHID CURRENT_USER AS
+    TYPE lt_prod_cab_tp IS RECORD
+      (
+          id_sequencial              NUMBER
+        , produto                    VARCHAR2(240)
+        , descricao                  VARCHAR2(240)  
+        , unidade_medida             VARCHAR2(3)    
+        , secao_produto              VARCHAR2(40)   
+        , grupo_produto              VARCHAR2(40)   
+        , subgrupo_produto           VARCHAR2(40)   
+        , categoria_produto          VARCHAR2(40)   
+        , sub_categoria              VARCHAR2(40)   
+        , apresentacao               VARCHAR2(40)   
+        , tipo_secao                 VARCHAR2(40)   
+        , marca                      VARCHAR2(40)   
+        , codigo_cest                VARCHAR2(150)  
+        , data_inclusao              DATE           
+        , data_fora_linha            DATE           
+        , fabricante_cnpj            VARCHAR2(4000)   
+        , status_compra              VARCHAR2(40)   
+        , status_venda               VARCHAR2(40)   
+        , ncm                        VARCHAR2(40)   
+        , embalagem_industria        VARCHAR2(40)   
+        , sazonalidade               VARCHAR2(40)   
+        , data_hora_inclusao         DATE           
+        , data_hora_ultima_alteracao DATE           
+        , envio_status               NUMBER
+        , envio_data_hora            TIMESTAMP(6)   
+        , envio_erro                 VARCHAR2(4000) 
+        , qtd_apresentacao           VARCHAR2(240)
+        , status_item                VARCHAR2(30)   
+        , tipo_medicamento           VARCHAR2(240)
+        , comercializavel            CHAR(1)        
+        , marca_gc                   VARCHAR2(40)   
+        , pbm                        VARCHAR2(20)   
+        , peso                       NUMBER
+        , familia                    VARCHAR2(60)   
+        , comprador                  VARCHAR2(60)   
+        , tipo_reposicao             VARCHAR2(100)  
+        , dimensao_uni_medida        VARCHAR2(60)   
+        , dimensao_com               NUMBER
+        , dimensao_lag               NUMBER
+        , dimensao_alt               NUMBER
+        , informacao_dun             VARCHAR2(240)
+        , pacote_produto             VARCHAR2(240)
+        , origem                     VARCHAR2(2)
+        , unidade_medida_fracionado  VARCHAR2(40)
+        , id_campanha                NUMBER
+        , ean                        VARCHAR2(20)   
+        , ean_quantidade_embalagem   VARCHAR2(240)
+        , retencao_receita           VARCHAR2(25)   
+        , venda_controlada           VARCHAR2(25)   
+        , livro_portaria_344         VARCHAR2(25)   
+        , registro_ms                VARCHAR2(240)  
+        , tipo_receita               VARCHAR2(240)  
+        , farmacia_popular           VARCHAR2(240)  
+        , controle_rastreabilidade   VARCHAR2(240)  
+        , principio_ativo            VARCHAR2(240)  
+        , dosagem                    VARCHAR2(240)  
+        , nome_comercial             VARCHAR2(80)   
+        , requer_crm                 VARCHAR2(240)  
+        , classe_terapeutica         VARCHAR2(240)  
+        , termolabil                 VARCHAR2(40)   
+        , produto_uso_continuo       VARCHAR2(25)   
+        , lista_pnu                  VARCHAR2(240)  
+        , uso_consumo                VARCHAR2(30)
+        , ncm_icms                   VARCHAR2(240)
+        , ncm_ipi                    VARCHAR2(240)
+        , fabricacao_propria         VARCHAR2(240)
+        , embalagem_padrao           VARCHAR2(240)
+        , caixaria                   VARCHAR2(240)
+        , minmultcompra              VARCHAR2(240)
+        , icms_desonerado            VARCHAR2(240)
+        , motivo_isencao_ms          VARCHAR2(240)
+        , situacao_estadual          VARCHAR2(240)
+        , indice_ibpt                VARCHAR2(240)    
+      )
+    ;  
+    
+    TYPE prod_cab        IS TABLE OF lt_prod_cab_tp;
+    
+    FUNCTION GET_ITENS_F( p_date IN VARCHAR2 ) RETURN prod_cab PIPELINED;
+    
     END XXVEN_INT_ITENS_PKG;
     `,
     `
-    CREATE OR REPLACE PACKAGE BODY XXVEN_INT_ITENS_PKG AS
+    create or replace PACKAGE BODY XXVEN_INT_ITENS_PKG AS
            
       FUNCTION GET_ITENS_F( p_date IN VARCHAR2) RETURN prod_cab PIPELINED
       IS
@@ -611,6 +612,7 @@ async function run() {
           retset.icms_desonerado             :=    c_itens.icms_desonerado;
           retset.motivo_isencao_ms           :=    c_itens.motivo_isencao_ms;
           retset.situacao_estadual           :=    c_itens.situacao_estadual;
+          retset.indice_ibpt                 :=    vclassif_fiscal.attribute1;
           --retset.teste_Data                  :=    p_date;
           pipe ROW(retset);
         END LOOP;
