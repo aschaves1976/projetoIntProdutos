@@ -28,7 +28,7 @@ async function run() {
     // Create a PL/SQL package that uses a RECORD
     const stmts = [
     `
-    create or replace PACKAGE xxven_int_itens_pkg AUTHID CURRENT_USER AS
+    create or replace PACKAGE APPS.xxven_int_itens_pkg AUTHID CURRENT_USER AS
     TYPE lt_prod_cab_tp IS RECORD
       (
           id_sequencial              NUMBER
@@ -114,7 +114,7 @@ async function run() {
     END XXVEN_INT_ITENS_PKG;
     `,
     `
-    create or replace PACKAGE BODY XXVEN_INT_ITENS_PKG AS
+    create or replace PACKAGE BODY APPS.XXVEN_INT_ITENS_PKG AS
            
       FUNCTION GET_ITENS_F( p_date IN VARCHAR2) RETURN prod_cab PIPELINED
       IS
@@ -637,7 +637,7 @@ async function run() {
 
     const plsql = `SELECT
                       *            
-                  FROM   TABLE(XXVEN_INT_ITENS_PKG.GET_ITENS_F('${date}'))
+                  FROM   TABLE(APPS.XXVEN_INT_ITENS_PKG.GET_ITENS_F('${date}'))
                   ORDER BY produto
                   `
 
