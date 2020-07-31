@@ -12,7 +12,10 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
   -- |   saldo de itens nos inventários                                |
   -- |                                                                 |
   -- | [DESCRIPTION]                                                   |
-  -- |   ...                                                           |
+  -- |   DBLinks: Todos apontam para os dados contidos na producao do  |
+  -- |    Procfit.                                                     |
+  -- |      Homologacao: prochml                                       |
+  -- |      Producao: PROCFIT                                          |
   -- |                                                                 |
   -- | [PARAMETERS]                                                    |
   -- |   [Parametro1: descricao do parametro]                          |
@@ -238,27 +241,27 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                    , ln_operating_unit
               FROM org_organization_definitions  ood
             WHERE 1=1
-              AND ood.organization_code = l_item(i).empresa
+              AND ood.organization_code = l_item(i).organizacao_oracle
               -- AND ood.operating_unit    = fnd_global.org_id
             ;
           EXCEPTION
             WHEN NO_DATA_FOUND THEN
-              lv_msg_erro := 'A Organização '||l_item(i).empresa||' não foi localizada na Unidade Operacional '||fnd_global.org_id||' .';
+              lv_msg_erro := 'A Organização '||l_item(i).organizacao_oracle||' não foi localizada na Unidade Operacional '||fnd_global.org_id||' .';
               set_log_p
                 (
                    p_produto           => l_item(i).produto
-                 , p_empresa           => l_item(i).empresa
+                 , p_empresa           => l_item(i).organizacao_oracle
                  , p_envio_status      => NULL
                  , p_envio_erro        => lv_msg_erro
                 )
               ;
               GOTO PROXIMO;
             WHEN OTHERS THEN
-              lv_msg_erro := 'Validação da Organização '||l_item(i).empresa||' - Error: '|| SQLERRM;
+              lv_msg_erro := 'Validação da Organização '||l_item(i).organizacao_oracle||' - Error: '|| SQLERRM;
               set_log_p
                 (
                    p_produto           => l_item(i).produto
-                 , p_empresa           => l_item(i).empresa
+                 , p_empresa           => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -279,7 +282,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
               set_log_p
                 (
                    p_produto     => l_item(i).produto
-                 , p_empresa => l_item(i).empresa
+                 , p_empresa => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -290,7 +293,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
               set_log_p
                 (
                    p_produto     => l_item(i).produto
-                 , p_empresa => l_item(i).empresa
+                 , p_empresa => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -315,7 +318,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
               set_log_p
                 (
                    p_produto     => l_item(i).produto
-                 , p_empresa => l_item(i).empresa
+                 , p_empresa => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -326,7 +329,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
               set_log_p
                 (
                    p_produto     => l_item(i).produto
-                 , p_empresa => l_item(i).empresa
+                 , p_empresa => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -372,7 +375,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                   set_log_p
                     (
                        p_produto     => l_item(i).produto
-                     , p_empresa => l_item(i).empresa
+                     , p_empresa => l_item(i).organizacao_oracle
                      , p_envio_status      => 30
                      , p_envio_erro        => lv_msg_erro
                     )
@@ -383,7 +386,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                   set_log_p
                     (
                        p_produto     => l_item(i).produto
-                     , p_empresa => l_item(i).empresa
+                     , p_empresa => l_item(i).organizacao_oracle
                      , p_envio_status      => 30
                      , p_envio_erro        => lv_msg_erro
                     )
@@ -413,7 +416,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                   set_log_p
                     (
                        p_produto     => l_item(i).produto
-                     , p_empresa => l_item(i).empresa
+                     , p_empresa => l_item(i).organizacao_oracle
                      , p_envio_status      => 30
                      , p_envio_erro        => lv_msg_erro
                     )
@@ -424,7 +427,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                   set_log_p
                     (
                        p_produto     => l_item(i).produto
-                     , p_empresa => l_item(i).empresa
+                     , p_empresa => l_item(i).organizacao_oracle
                      , p_envio_status      => 30
                      , p_envio_erro        => lv_msg_erro
                     )
@@ -436,7 +439,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
             set_log_p
               (
                  p_produto     => l_item(i).produto
-               , p_empresa => l_item(i).empresa
+               , p_empresa => l_item(i).organizacao_oracle
                , p_envio_status      => 30
                , p_envio_erro        => lv_msg_erro
               )
@@ -461,7 +464,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
               set_log_p
                 (
                    p_produto     => l_item(i).produto
-                 , p_empresa => l_item(i).empresa
+                 , p_empresa => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -472,7 +475,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
               set_log_p
                 (
                    p_produto     => l_item(i).produto
-                 , p_empresa => l_item(i).empresa
+                 , p_empresa => l_item(i).organizacao_oracle
                  , p_envio_status      => 30
                  , p_envio_erro        => lv_msg_erro
                 )
@@ -534,7 +537,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                  , lv_subinventory_code        --  subinventory_code
                  , ln_distribution_account_id  --  distribution_account_id
                  , ln_transaction_type_id      --  transaction_type_id
-                 , 'AJUSTE_PROCFIT_' || TO_CHAR( SYSDATE, 'DD/MM/YYYY HH24:MI:SS' )
+                 , 'AJUSTE_prochml_' || TO_CHAR( SYSDATE, 'DD/MM/YYYY HH24:MI:SS' )
                  , ln_transaction_cost
                 );
 
@@ -557,13 +560,13 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
              --
              IF lv_return_status IN ('S', 'W') THEN
                 
-               lv_msg_erro := 'Header - Lines: '||l_item(i).empresa||' - '||l_item(i).produto||
+               lv_msg_erro := 'Header - Lines: '||l_item(i).organizacao_oracle||' - '||l_item(i).produto||
                               ' - Movimentacao de material realizada com sucesso. ID da Solicitacao: ' || ln_request_id
                ;
                set_log_p
                  (
                     p_produto     => l_item(i).produto
-                  , p_empresa => l_item(i).empresa
+                  , p_empresa => l_item(i).organizacao_oracle
                   , p_envio_status      => 40
                   , p_envio_erro        => NULL
                  )
@@ -589,7 +592,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                set_log_p
                  (
                     p_produto     => l_item(i).produto
-                  , p_empresa => l_item(i).empresa
+                  , p_empresa => l_item(i).organizacao_oracle
                   , p_envio_status      => 30
                   , p_envio_erro        => lv_msg_erro
                  )
@@ -626,7 +629,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
             FROM oracle_estoque_empresas@prochml line
           WHERE 1=1
             AND produto      = l_item(i).produto
-            AND empresa  = l_item(i).empresa
+            AND empresa  = l_item(i).organizacao_oracle
             AND envio_status       = '30'
           ;
           ln_cnt_error := ln_cnt_error + ln_aux;
