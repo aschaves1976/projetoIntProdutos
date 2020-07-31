@@ -114,8 +114,8 @@ async function run() {
     END XXVEN_INT_ITENS_PKG;
     `,
     `
-    create or replace PACKAGE BODY APPS.XXVEN_INT_ITENS_PKG AS
-           
+    CREATE OR REPLACE PACKAGE BODY      XXVEN_INT_ITENS_PKG AS
+         
       FUNCTION GET_ITENS_F( p_date IN VARCHAR2) RETURN prod_cab PIPELINED
       IS
         retset    lt_prod_cab_tp;
@@ -268,7 +268,8 @@ async function run() {
                     , CAB.fabricacao_propria
                     , CAB.icms_desonerado
                     , CAB.motivo_isencao_ms
-                    , CAB.situacao_estadual      
+                    , CAB.situacao_estadual
+                    , CAB.new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
               FROM
                       (
                         SELECT
@@ -325,7 +326,8 @@ async function run() {
                                 , aa.attribute15                 icms_desonerado
                                 , aa.attribute3                  motivo_isencao_ms
                                 , aa.global_attribute3 || 
-      						    aa.global_attribute6           situacao_estadual
+                                  aa.global_attribute6           situacao_estadual
+                                , aa.attribute14                 new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
                           FROM
                                   mtl_system_items_tl            xx
                                 , mtl_system_items_b             aa
@@ -401,7 +403,8 @@ async function run() {
                                 , aa.attribute15                 icms_desonerado
                                 , aa.attribute3                  motivo_isencao_ms
                                 , aa.global_attribute3 || 
-      						    aa.global_attribute6           situacao_estadual
+                                  aa.global_attribute6           situacao_estadual
+                                , aa.attribute14                 new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
                           FROM
                                   mtl_system_items_tl            xx
                                 , mtl_system_items_b             aa
@@ -485,6 +488,7 @@ async function run() {
                     , CAB.icms_desonerado
                     , CAB.motivo_isencao_ms
                     , CAB.situacao_estadual
+                    , CAB.new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
           )
         LOOP
       
@@ -561,8 +565,9 @@ async function run() {
           retset.marca_gc                    :=    vmarca_gc.segment1;
           retset.fabricante_cnpj             :=    vfabricante.description;
           retset.status_compra               :=    c_itens.status_compra;
-          retset.status_venda                :=    c_itens.status_venda;
-          retset.ncm                         :=    SUBSTR(vclassif_fiscal.segment1, 1, 8);
+          retset.status_venda                :=    c_itens.status_venda;     
+          -- retset.ncm                         :=    SUBSTR(vclassif_fiscal.segment1, 1, 8);
+          retset.ncm                         :=    c_itens.new_ncm;  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
           retset.embalagem_industria         :=    c_itens.embal_indust;
           retset.sazonalidade                :=    vsazonalidade.segment1;
           retset.tipo_medicamento            :=    vtipo_medicamento.segment1;
@@ -620,7 +625,7 @@ async function run() {
       
       END GET_ITENS_F;
       
-    END XXVEN_INT_ITENS_PKG;
+    END XXVEN_INT_ITENS_PKG;  
     `
 ]
 
