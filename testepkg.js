@@ -78,6 +78,7 @@ async function run() {
         , id_campanha                NUMBER
         , ean                        VARCHAR2(20)   
         , ean_quantidade_embalagem   VARCHAR2(240)
+        , ean_principal              VARCHAR2(1)
         , retencao_receita           VARCHAR2(25)   
         , venda_controlada           VARCHAR2(25)   
         , livro_portaria_344         VARCHAR2(25)   
@@ -103,7 +104,7 @@ async function run() {
         , icms_desonerado            VARCHAR2(240)
         , motivo_isencao_ms          VARCHAR2(240)
         , situacao_estadual          VARCHAR2(240)
-        , indice_ibpt                VARCHAR2(240)    
+        , indice_ibpt                VARCHAR2(240)
       )
     ;  
     
@@ -263,6 +264,11 @@ async function run() {
                     , CAB.status_item
                     , EAN.segment1  ean
                     , EAN.segment2  ean_quantidade_embalagem
+                    , CASE
+                        WHEN ean.segment1 = cab.ean_main THEN
+                          'S'
+                        ELSE 'N'
+                      END            ean_principal
                     , CAB.ncm_icms
                     , CAB.ncm_ipi
                     , CAB.fabricacao_propria
@@ -328,6 +334,7 @@ async function run() {
                                 , aa.global_attribute3 || 
                                   aa.global_attribute6           situacao_estadual
                                 , aa.attribute14                 new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
+                                , aa.global_attribute10          ean_main
                           FROM
                                   mtl_system_items_tl            xx
                                 , mtl_system_items_b             aa
@@ -339,7 +346,7 @@ async function run() {
                                     GROUP BY aa.inventory_item_id
                                   )                              ss      
                         WHERE 1=1
-                          AND xx.LANGUAGE          = 'PTB'
+                          AND xx.LANGUAGE          = USERENV('LANG')
                           AND aa.inventory_item_id = xx.inventory_item_id
                           AND aa.organization_id   = xx.organization_id
                           AND aa.organization_id   = zz.organization_id
@@ -405,6 +412,7 @@ async function run() {
                                 , aa.global_attribute3 || 
                                   aa.global_attribute6           situacao_estadual
                                 , aa.attribute14                 new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
+                                , aa.global_attribute10          ean_main
                           FROM
                                   mtl_system_items_tl            xx
                                 , mtl_system_items_b             aa
@@ -416,15 +424,15 @@ async function run() {
                                     GROUP BY aa.inventory_item_id
                                   )                              ss      
                         WHERE 1=1
-                          AND xx.LANGUAGE          = 'PTB'
-                          AND aa.inventory_item_id = xx.inventory_item_id
-                          AND aa.organization_id   = xx.organization_id
-                          AND aa.organization_id   = zz.organization_id
-                          AND aa.inventory_item_id = ss.inventory_item_id
-                          AND zz.organization_code = 'MST'
+                          AND xx.LANGUAGE             = USERENV('LANG')
+                          AND aa.inventory_item_id    = xx.inventory_item_id
+                          AND aa.organization_id      = xx.organization_id
+                          AND aa.organization_id      = zz.organization_id
+                          AND aa.inventory_item_id    = ss.inventory_item_id
+                          AND zz.organization_code    = 'MST'
                           AND aa.inventory_item_flag  = 'Y'
-                          AND ss.last_update_date <= SYSDATE
-                          AND ss.last_update_date >=  FND_DATE.CANONICAL_TO_DATE(p_date) -- ld_date
+                          AND ss.last_update_date    <= SYSDATE
+                          AND ss.last_update_date    >=  FND_DATE.CANONICAL_TO_DATE(p_date) -- ld_date
                       )                                                                  CAB
                     , (  
                         SELECT
@@ -482,6 +490,7 @@ async function run() {
                     , CAB.status_item
                     , EAN.segment1
                     , EAN.segment2
+                    , CAB.EAN_MAIN
                     , CAB.ncm_icms
                     , CAB.ncm_ipi
                     , CAB.fabricacao_propria
@@ -618,7 +627,8 @@ async function run() {
           retset.motivo_isencao_ms           :=    c_itens.motivo_isencao_ms;
           retset.situacao_estadual           :=    c_itens.situacao_estadual;
           retset.indice_ibpt                 :=    vclassif_fiscal.attribute1;
-          --retset.teste_Data                  :=    p_date;
+          retset.ean_principal               :=    c_itens.ean_principal;
+          --retset.teste_Data         :=    p_date;
           pipe ROW(retset);
         END LOOP;
         RETURN;
