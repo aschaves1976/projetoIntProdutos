@@ -192,12 +192,12 @@ async function run() {
                                 , mc.attribute1  -- ibpt
                                 , mc.category_id -- id
                                 , mct.description
-                          FROM    mtl_category_sets   mcs
-                                , mtl_categories      mc
-                                , mtl_item_categories mic
-                                , mtl_system_items_b  msi
-                                , mtl_parameters      mp
-                                , mtl_categories_tl   mct
+                          FROM    APPS.mtl_category_sets   mcs
+                                , APPS.mtl_categories      mc
+                                , APPS.mtl_item_categories mic
+                                , APPS.mtl_system_items_b  msi
+                                , APPS.mtl_parameters      mp
+                                , APPS.mtl_categories_tl   mct
                          WHERE 1=1
                            AND mct.language          = USERENV('LANG')
                            AND mct.category_id       = mc.category_id
@@ -310,14 +310,14 @@ async function run() {
                                 , aa.unit_weight                 peso
                                 , (
                                     SELECT unit_of_measure
-                                      FROM mtl_units_of_measure_tl
+                                      FROM APPS.mtl_units_of_measure_tl
                                     WHERE 1=1
                                       AND uom_code = aa.dimension_uom_code
                                       AND  ROWNUM < 2
                                   )                              dimensao_und_medida
                                , (
                                    SELECT  uom_code
-                                     FROM mtl_units_of_measure
+                                     FROM APPS.mtl_units_of_measure
                                    WHERE 1=1
                                      AND unit_of_measure = aa.attribute11
                                  )                              unidade_medida_fracionado
@@ -336,12 +336,12 @@ async function run() {
                                 , aa.attribute14                 new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
                                 , aa.global_attribute10          ean_main
                           FROM
-                                  mtl_system_items_tl            xx
-                                , mtl_system_items_b             aa
-                                , mtl_parameters                 zz 
+                                  APPS.mtl_system_items_tl            xx
+                                , APPS.mtl_system_items_b             aa
+                                , APPS.mtl_parameters                 zz 
                                 , (
                                     SELECT aa.inventory_item_id, MAX(aa.last_update_date) last_update_date -- capturar alteração na categoria do item
-                                      FROM mtl_item_categories aa
+                                      FROM APPS.mtl_item_categories aa
                                     WHERE aa.organization_id = 174  
                                     GROUP BY aa.inventory_item_id
                                   )                              ss      
@@ -388,14 +388,14 @@ async function run() {
                                 , aa.unit_weight                 peso
                                 , (
                                     SELECT unit_of_measure
-                                      FROM mtl_units_of_measure_tl
+                                      FROM APPS.mtl_units_of_measure_tl
                                     WHERE 1=1
                                       AND uom_code = aa.dimension_uom_code
                                       AND  ROWNUM < 2
                                   )                              dimensao_und_medida
                                , (
                                    SELECT  uom_code
-                                     FROM mtl_units_of_measure
+                                     FROM APPS.mtl_units_of_measure
                                    WHERE 1=1
                                      AND unit_of_measure = aa.attribute11
                                  )                              unidade_medida_fracionado
@@ -414,12 +414,12 @@ async function run() {
                                 , aa.attribute14                 new_ncm  -- ** COLUNA TEMPORARIA, SERÁ EXCLUÍDA APÓS 15 DIAS DA ENTRADA DO PROJETO EM PRODUCAO **
                                 , aa.global_attribute10          ean_main
                           FROM
-                                  mtl_system_items_tl            xx
-                                , mtl_system_items_b             aa
-                                , mtl_parameters                 zz 
+                                  APPS.mtl_system_items_tl            xx
+                                , APPS.mtl_system_items_b             aa
+                                , APPS.mtl_parameters                 zz 
                                 , (
                                     SELECT aa.inventory_item_id, MAX(aa.last_update_date) last_update_date -- capturar alteração na categoria do item
-                                      FROM mtl_item_categories aa
+                                      FROM APPS.mtl_item_categories aa
                                     WHERE aa.organization_id = 174  
                                     GROUP BY aa.inventory_item_id
                                   )                              ss      
@@ -440,11 +440,11 @@ async function run() {
                                , mc.segment2
                                , mc.category_id
                                , msi.inventory_item_id
-                          FROM   mtl_category_sets mcs
-                               , mtl_categories  mc
-                               , mtl_item_categories mic
-                               , mtl_system_items_b msi
-                               , mtl_parameters mp
+                          FROM   APPS.mtl_category_sets mcs
+                               , APPS.mtl_categories  mc
+                               , APPS.mtl_item_categories mic
+                               , APPS.mtl_system_items_b msi
+                               , APPS.mtl_parameters mp
                         WHERE 1=1
                           AND mcs.category_set_name = 'Informacoes Produtos x EAN' 
                           AND mcs.structure_id      = mc.structure_id
