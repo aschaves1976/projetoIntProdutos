@@ -583,7 +583,7 @@ CREATE OR REPLACE PACKAGE BODY XXVEN_INV_CST_UPDT_PKG AS
                --
              ELSE
                --
-               lv_msg_erro := 'Movimentacao de material realizada com erro - transaction_interface_id = '|| transaction_interface_id || ' -> ';
+               lv_msg_erro := 'Movimentacao de material realizada com erro - transaction_interface_id = '|| ln_transaction_interface_id || ' -> ';
                --
                FOR c_regerr IN 
                  (
