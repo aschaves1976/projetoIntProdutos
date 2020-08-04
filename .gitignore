@@ -2,4 +2,5 @@ scriptInsertFabricanteMarcaGcCustomTable.sql
 exportar.csv
 *.xlsx
 *.old
+/sql/*old*
 /inv-replicacao-itens-inventarios

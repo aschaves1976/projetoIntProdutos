@@ -12,10 +12,7 @@ CREATE OR REPLACE PACKAGE XXVEN_INV_CST_UPDT_PKG AUTHID CURRENT_USER AS
   -- |   saldo de itens nos inventários                                |
   -- |                                                                 |
   -- | [DESCRIPTION]                                                   |
-  -- |   DBLinks: Todos apontam para os dados contidos na producao do  |
-  -- |    Procfit.                                                     |
-  -- |      Homologacao: prochml                                       |
-  -- |      Producao: PROCFIT                                          |
+  -- |   ...                                                           |
   -- |                                                                 |
   -- | [PARAMETERS]                                                    |
   -- |   [Parametro1: descricao do parametro]                          |
@@ -41,8 +38,8 @@ CREATE OR REPLACE PACKAGE XXVEN_INV_CST_UPDT_PKG AUTHID CURRENT_USER AS
     (
        p_produto       IN NUMBER
      , p_empresa       IN NUMBER
-     , p_envio_status  IN NUMBER
-     , p_envio_erro    IN VARCHAR2
+     , p_status        IN VARCHAR2
+     , p_description   IN VARCHAR2
     )
   ;
   --
